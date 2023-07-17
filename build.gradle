@@ -1,0 +1,60 @@
+plugins {
+    id 'java'
+    id("io.papermc.paperweight.userdev") version "1.5.5"
+    id("xyz.jpenilla.run-paper") version "2.1.0"
+}
+
+group = 'dev.the456gamer'
+version = '1.0-SNAPSHOT'
+description = "Test plugin for brig paper"
+
+repositories {
+
+    mavenCentral()
+    mavenLocal()
+//    maven {
+//        name = "papermc-repo"
+//        url = "https://repo.papermc.io/repository/maven-public/"
+//    }
+    maven {
+        name = "sonatype"
+        url = "https://oss.sonatype.org/content/groups/public/"
+    }
+
+}
+
+dependencies {
+    paperweight.paperDevBundle("1.20.1-R0.1-SNAPSHOT")
+}
+
+def targetJavaVersion = 17
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release.set(targetJavaVersion)
+    }
+    options.encoding = "UTF-8"
+}
+
+tasks {
+    assemble {
+    dependsOn(reobfJar)
+  }
+}
+
+processResources {
+    def props = ["version": project.version, "name": project.name,"description": project.description,"apiVersion": "1.20"]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('paper-plugin.yml') {
+        expand props
+    }
+}
