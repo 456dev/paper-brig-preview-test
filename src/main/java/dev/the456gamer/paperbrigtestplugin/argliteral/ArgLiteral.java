@@ -1,20 +1,20 @@
-package dev.the456gamer.paperbrigtestplugin.fancyliteral;
+package dev.the456gamer.paperbrigtestplugin.argliteral;
 
 import net.kyori.adventure.text.Component;
 
-public class FancyLiteral {
+public class ArgLiteral {
 
   private final String literal;
 
   private final Component tooltip;
 
-  public FancyLiteral(String literal, Component tooltip) {
+  public ArgLiteral(String literal, Component tooltip) {
     this.literal = literal;
     this.tooltip = tooltip;
   }
 
-  public static FancyLiteral fliteral(String literal, Component tooltip) {
-    return new FancyLiteral(literal, tooltip);
+  public static ArgLiteral fliteral(String literal, Component tooltip) {
+    return new ArgLiteral(literal, tooltip);
   }
 
   public String getLiteral() {
